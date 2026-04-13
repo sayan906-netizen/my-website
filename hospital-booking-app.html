@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediBook – Smart Healthcare Booking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Fustat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --gray: #505050;
+    --light-gray: #f8f8f8;
+    --green: rgba(90,225,76,0.89);
+    --white: #ffffff;
+    --overlay: rgba(0,0,0,0.24);
+    --dark-badge: #0e1311;
+    --red: #e53e3e;
+    --blue: #3182ce;
+    --teal: #2c7a7b;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO SECTION ===== */
+  #hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 700px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .video-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: #0a1a14;
+  }
+
+  #bg-video {
+    position: absolute;
+    width: 115%;
+    height: 115%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0;
+  }
+
+  .video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.18) 60%, rgba(0,0,0,0.55) 100%);
+    z-index: 1;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 120px;
+    background: transparent;
+  }
+
+  .nav-logo {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: -1.44px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-menu a {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+
+  .nav-menu a:hover { color: #fff; }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-signup {
+    width: 82px;
+    height: 38px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-signup:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+
+  .btn-login {
+    width: 101px;
+    height: 38px;
+    background: #000;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-login:hover { background: #222; }
+
+  /* ===== HERO CONTENT ===== */
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: -50px;
+    gap: 0;
+    padding: 0 120px;
+    text-align: center;
+  }
+
+  /* Badge */
+  .badge-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 34px;
+  }
+
+  .badge-dark {
+    background: #0e1311;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4ade80;
+  }
+
+  .badge-light {
+    background: rgba(255,255,255,0.92);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #111;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.12);
+  }
+
+  /* Headline */
+  .hero-title {
+    font-family: 'Fustat', sans-serif;
+    font-weight: 700;
+    font-size: 80px;
+    letter-spacing: -4.8px;
+    line-height: 1;
+    color: #fff;
+    margin-bottom: 34px;
+    text-shadow: 0 2px 40px rgba(0,0,0,0.4);
+  }
+
+  .hero-title span { color: #4ade80; }
+
+  .hero-subtitle {
+    font-family: 'Fustat', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.4px;
+    color: rgba(255,255,255,0.72);
+    max-width: 736px;
+    width: 542px;
+    margin-bottom: 44px;
+    line-height: 1.55;
+  }
+
+  /* Search / Booking Box */
+  .search-box {
+    background: rgba(0,0,0,0.24);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 18px;
+    padding: 14px;
+    max-width: 728px;
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px;
+  }
+
+  .credits-info {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .btn-upgrade {
+    background: rgba(90,225,76,0.89);
+    border: none;
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #0a2010;
+    cursor: pointer;
+  }
+
+  .powered-by {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .search-input-wrap {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+    flex: 1;
+    min-height: 64px;
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #111;
+    background: transparent;
+  }
+
+  .search-input::placeholder { color: rgba(0,0,0,0.45); }
+
+  .btn-submit {
+    width: 36px;
+    height: 36px;
+    background: #000;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .btn-submit:hover { background: #222; }
+
+  .search-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px;
+  }
+
+  .action-btns {
+    display: flex;
+    gap: 6px;
+  }
+
+  .action-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+  }
+
+  .action-btn:hover { background: rgba(255,255,255,0.16); }
+
+  .char-count {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ===== SECTIONS BELOW HERO ===== */
+  section {
+    padding: 100px 120px;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    background: #0f1a14;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 40px 120px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-num {
+    font-family: 'Fustat', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #4ade80;
+    letter-spacing: -2px;
+  }
+
+  .stat-label {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 50px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* Features */
+  #features {
+    background: #0a0f0c;
+  }
+
+  .section-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #4ade80;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Fustat', sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: -2.5px;
+    color: #fff;
+    line-height: 1.05;
+    max-width: 680px;
+    margin-bottom: 20px;
+  }
+
+  .section-sub {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 17px;
+    color: rgba(255,255,255,0.5);
+    max-width: 520px;
+    line-height: 1.6;
+    margin-bottom: 64px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .feature-card {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 32px 28px;
+    transition: transform 0.25s, border-color 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(74,222,128,0.4), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .feature-card:hover { transform: translateY(-4px); border-color: rgba(74,222,128,0.2); }
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 48px; height: 48px;
+    background: rgba(74,222,128,0.1);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+
+  .feature-title {
+    font-family: 'Fustat', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+
+  .feature-desc {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.65;
+  }
+
+  /* How it works */
+  #how-it-works {
+    background: #060d09;
+  }
+
+  .steps-wrap {
+    display: flex;
+    gap: 0;
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .steps-wrap::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 28px;
+    right: 28px;
+    height: 1px;
+    background: rgba(74,222,128,0.2);
+    z-index: 0;
+  }
+
+  .step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+    padding: 0 16px;
+  }
+
+  .step-num {
+    width: 56px; height: 56px;
+    background: #0e1311;
+    border: 2px solid rgba(74,222,128,0.35);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fustat', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #4ade80;
+  }
+
+  .step-title {
+    font-family: 'Fustat', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+
+  .step-desc {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.42);
+    line-height: 1.6;
+  }
+
+  /* Hospitals / Search */
+  #search-hospitals {
+    background: #0a0f0c;
+  }
+
+  .hospital-search-ui {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 32px;
+    margin-top: 20px;
+  }
+
+  .filter-panel {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .filter-label {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 8px;
+  }
+
+  .filter-select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .filter-select option { background: #111; }
+
+  .bed-type-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .bed-type-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .bed-type-btn:hover, .bed-type-btn.active {
+    background: rgba(74,222,128,0.12);
+    border-color: rgba(74,222,128,0.3);
+    color: #4ade80;
+  }
+
+  .btn-search-now {
+    width: 100%;
+    background: #4ade80;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #0a1a0a;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-search-now:hover { background: #22c55e; }
+
+  .hospitals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .hospital-card {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .hospital-card:hover {
+    border-color: rgba(74,222,128,0.25);
+    transform: translateX(4px);
+  }
+
+  .hospital-avatar {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #0d2a1a, #1a4028);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .hospital-info { flex: 1; }
+
+  .hospital-name {
+    font-family: 'Fustat', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+
+  .hospital-meta {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    gap: 12px;
+  }
+
+  .hospital-meta span { display: flex; align-items: center; gap: 4px; }
+
+  .beds-info {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .beds-avail {
+    font-family: 'Fustat', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #4ade80;
+    letter-spacing: -1px;
+  }
+
+  .beds-label {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .btn-book {
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .btn-book:hover { background: #111; border-color: rgba(74,222,128,0.3); }
+
+  /* Ambulance */
+  #ambulance {
+    background: #060d09;
+  }
+
+  .ambulance-ui {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+    margin-top: 20px;
+  }
+
+  .ambulance-form {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+
+  .form-label {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .form-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus { border-color: rgba(74,222,128,0.4); }
+  .form-input::placeholder { color: rgba(255,255,255,0.25); }
+
+  .emergency-types {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .emergency-type {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .emergency-type:hover, .emergency-type.active {
+    background: rgba(229,62,62,0.1);
+    border-color: rgba(229,62,62,0.3);
+  }
+
+  .emergency-type .et-icon { font-size: 20px; margin-bottom: 5px; }
+
+  .emergency-type .et-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .btn-call-ambulance {
+    width: 100%;
+    background: linear-gradient(135deg, #e53e3e, #c53030);
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: -0.3px;
+    transition: opacity 0.2s;
+  }
+
+  .btn-call-ambulance:hover { opacity: 0.9; }
+
+  .ambulance-info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ambu-info-card {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .ambu-icon-wrap {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .ambu-card-title {
+    font-family: 'Fustat', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .ambu-card-desc {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+  }
+
+  /* Doctors */
+  #doctors {
+    background: #0a0f0c;
+  }
+
+  .doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .doctor-card {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 18px;
+    padding: 24px 20px;
+    text-align: center;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .doctor-card:hover { transform: translateY(-5px); border-color: rgba(74,222,128,0.2); }
+
+  .doctor-avatar {
+    width: 68px; height: 68px;
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    border: 2px solid rgba(74,222,128,0.2);
+  }
+
+  .doctor-name {
+    font-family: 'Fustat', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .doctor-spec {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 12px;
+    color: #4ade80;
+    margin-bottom: 10px;
+  }
+
+  .doctor-avail {
+    display: inline-block;
+    background: rgba(74,222,128,0.1);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #4ade80;
+    margin-bottom: 14px;
+  }
+
+  .doctor-avail.busy {
+    background: rgba(229,62,62,0.1);
+    color: #fc8181;
+  }
+
+  .doctor-rating {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 14px;
+  }
+
+  .btn-book-doc {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-book-doc:hover { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.3); color: #4ade80; }
+
+  /* Insurance */
+  #insurance {
+    background: #060d09;
+  }
+
+  .insurance-ui {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .insurance-checker {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 36px;
+  }
+
+  .insurance-title-sm {
+    font-family: 'Fustat', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 24px;
+    letter-spacing: -0.8px;
+  }
+
+  .insurance-result {
+    margin-top: 20px;
+    background: rgba(74,222,128,0.07);
+    border: 1px solid rgba(74,222,128,0.2);
+    border-radius: 12px;
+    padding: 18px;
+    display: none;
+  }
+
+  .insurance-result.show { display: block; }
+
+  .ins-result-title {
+    font-family: 'Fustat', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4ade80;
+    margin-bottom: 8px;
+  }
+
+  .ins-result-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ins-result-list li {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ins-result-list li::before { content: '✓'; color: #4ade80; }
+
+  .insurance-providers {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .provider-card {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .provider-card:hover { border-color: rgba(74,222,128,0.2); }
+
+  .provider-logo {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .provider-name {
+    font-family: 'Fustat', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
+  }
+
+  .provider-tag {
+    background: rgba(74,222,128,0.1);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #4ade80;
+  }
+
+  /* CTA */
+  #cta {
+    background: #0a0f0c;
+    text-align: center;
+  }
+
+  .cta-inner {
+    background: linear-gradient(135deg, #0d2a1a 0%, #111a14 50%, #0d2a1a 100%);
+    border: 1px solid rgba(74,222,128,0.15);
+    border-radius: 28px;
+    padding: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-inner::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 200px;
+    background: radial-gradient(circle, rgba(74,222,128,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: 'Fustat', sans-serif;
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -3px;
+    color: #fff;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .cta-sub {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 17px;
+    color: rgba(255,255,255,0.45);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  .cta-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .btn-primary {
+    background: #4ade80;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 32px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #0a1a0a;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover { background: #22c55e; }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 14px 32px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-secondary:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.35); }
+
+  /* Footer */
+  footer {
+    background: #060d09;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 60px 120px 40px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 280px 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand-name {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -1.2px;
+    color: #fff;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .footer-brand-desc {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.65;
+  }
+
+  .footer-col-title {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-copy {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .footer-emergency {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fc8181;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal {
+    background: #111a14;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 40px;
+    width: 480px;
+    max-width: 95vw;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(255,255,255,0.07);
+    border: none;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.5);
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .modal-title {
+    font-family: 'Fustat', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .modal-subtitle {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .modal-confirm {
+    width: 100%;
+    background: #4ade80;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #0a1a0a;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  /* Notification toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #0e1311;
+    border: 1px solid rgba(74,222,128,0.3);
+    border-radius: 14px;
+    padding: 16px 22px;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .toast-icon { font-size: 20px; }
+
+  .toast-msg {
+    font-family: 'Schibsted Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 1100px) {
+    nav, section, .stats-bar, footer { padding-left: 40px; padding-right: 40px; }
+    .hero-content { padding: 0 40px; }
+    .hero-title { font-size: 60px; letter-spacing: -3px; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .doctors-grid { grid-template-columns: repeat(2, 1fr); }
+    .hospital-search-ui, .ambulance-ui, .insurance-ui { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .hero-subtitle { width: 100%; max-width: 100%; }
+  }
+
+  @media (max-width: 700px) {
+    nav { padding: 12px 20px; }
+    .nav-menu { display: none; }
+    .hero-title { font-size: 40px; letter-spacing: -2px; }
+    section { padding: 60px 20px; }
+    .stats-bar { padding: 32px 20px; flex-wrap: wrap; gap: 24px; }
+    .steps-wrap { flex-wrap: wrap; }
+    .steps-wrap::before { display: none; }
+    .features-grid, .doctors-grid { grid-template-columns: 1fr; }
+    footer { padding: 40px 20px; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+    .cta-inner { padding: 40px 24px; }
+    .cta-title { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section id="hero" style="padding:0;">
+  <div class="video-wrapper">
+    <video id="bg-video" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260329_050842_be71947f-f16e-4a14-810c-06e83d23ddb5.mp4" muted playsinline autoplay loop preload="auto"></video>
+    <div class="video-overlay"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14M4 4l8 8M12 4l-8 8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </div>
+      MediBook
+    </a>
+
+    <ul class="nav-menu">
+      <li><a href="#search-hospitals">Hospitals</a></li>
+      <li><a href="#features">Features <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="display:inline;vertical-align:middle;margin-top:-1px"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a href="#ambulance">Ambulance</a></li>
+      <li><a href="#doctors">Doctors</a></li>
+      <li><a href="#insurance">Insurance</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="btn-signup" onclick="showModal('signup')">Sign Up</button>
+      <button class="btn-login" onclick="showModal('login')">Log In</button>
+    </div>
+  </nav>
+
+  <!-- HERO CONTENT -->
+  <div class="hero-content">
+    <div class="badge-wrap">
+      <div class="badge-dark">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.4 5.2H13L9.3 7.7L10.7 12L7 9.5L3.3 12L4.7 7.7L1 5.2H5.6L7 1Z" fill="#4ade80"/></svg>
+        New
+      </div>
+      <div class="badge-light">Save lives with faster hospital access</div>
+    </div>
+
+    <h1 class="hero-title">Book Healthcare<br><span>Before You Arrive</span></h1>
+
+    <p class="hero-subtitle">Find available hospital beds, call ambulances, and consult doctors — all in real-time. One platform for every medical emergency.</p>
+
+    <!-- SEARCH BOX -->
+    <div class="search-box">
+      <div class="search-top">
+        <div class="credits-info">
+          🏥 60/450 searches
+          <button class="btn-upgrade">Upgrade</button>
+        </div>
+        <div class="powered-by">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.8 5.5L13.5 6L10 9.3L11 14L7 11.5L3 14L4 9.3L0.5 6L5.2 5.5L7 1Z" fill="rgba(255,255,255,0.5)"/></svg>
+          Powered by AI Triage
+        </div>
+      </div>
+
+      <div class="search-input-wrap">
+        <input class="search-input" id="heroSearch" type="text" placeholder="Type symptoms or search hospitals..." maxlength="3000" oninput="updateCount(this)">
+        <button class="btn-submit" onclick="handleSearch()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8l5-5 5 5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div class="search-bottom">
+        <div class="action-btns">
+          <button class="action-btn">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2h8a1 1 0 011 1v6a1 1 0 01-1 1H2a1 1 0 01-1-1V3a1 1 0 011-1zm4 1v6M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Attach
+          </button>
+          <button class="action-btn">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="1" width="4" height="7" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 7c0 2.2 1.8 4 4 4s4-1.8 4-4M6 11v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Voice
+          </button>
+          <button class="action-btn" onclick="document.getElementById('heroSearch').value='Cardiac emergency near me'; updateCount(document.getElementById('heroSearch'))">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 8l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Prompts
+          </button>
+        </div>
+        <span class="char-count" id="charCount">0/3,000</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">2,400+</div>
+    <div class="stat-label">Partner Hospitals</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num">18min</div>
+    <div class="stat-label">Avg. Response Time</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num">94%</div>
+    <div class="stat-label">Bed Availability Accuracy</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num">1.2M+</div>
+    <div class="stat-label">Lives Impacted</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num">850+</div>
+    <div class="stat-label">Verified Doctors</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features" class="reveal">
+  <div class="section-tag">Key Features</div>
+  <h2 class="section-title">Everything you need in an emergency</h2>
+  <p class="section-sub">A single platform that connects patients, hospitals, ambulances and doctors — instantly.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🏥</div>
+      <div class="feature-title">Live Bed Status</div>
+      <p class="feature-desc">Real-time ICU, general ward, and private room availability across partner hospitals updated every 60 seconds.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🚑</div>
+      <div class="feature-title">Ambulance Booking</div>
+      <p class="feature-desc">Dispatch the nearest available ambulance with one tap. Track its live location en route to you.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👨‍⚕️</div>
+      <div class="feature-title">Doctor Availability</div>
+      <p class="feature-desc">See which specialists are on duty right now. Book same-day appointments across all specializations.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Hospital Ratings</div>
+      <p class="feature-desc">Verified patient reviews, infrastructure ratings, and specialty rankings to help you choose confidently.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💳</div>
+      <div class="feature-title">Insurance Checker</div>
+      <p class="feature-desc">Instantly verify which hospitals accept your insurance policy before you travel — zero surprises on billing.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📍</div>
+      <div class="feature-title">Nearest Hospital AI</div>
+      <p class="feature-desc">AI-powered triage suggests the optimal hospital based on your emergency type, distance, and bed count.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="reveal">
+  <div class="section-tag">How It Works</div>
+  <h2 class="section-title">From emergency to admission in minutes</h2>
+  <p class="section-sub">Six simple steps designed to reduce the chaos and save critical time during emergencies.</p>
+
+  <div class="steps-wrap">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Open App</div>
+      <p class="step-desc">Launch MediBook on any device, no login required for emergencies.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Select Emergency</div>
+      <p class="step-desc">Choose the type: accident, cardiac, stroke, maternity, or other.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">See Hospitals</div>
+      <p class="step-desc">Instantly view nearby hospitals with real-time bed availability.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Book a Bed</div>
+      <p class="step-desc">Reserve your bed before arriving — the hospital will be ready.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-title">Call Ambulance</div>
+      <p class="step-desc">Optionally dispatch an ambulance with live GPS tracking.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-title">Get Admitted</div>
+      <p class="step-desc">Arrive and get admitted immediately — no waiting, no paperwork delays.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH HOSPITALS -->
+<section id="search-hospitals" class="reveal">
+  <div class="section-tag">Find Hospitals</div>
+  <h2 class="section-title">Book beds at top hospitals nearby</h2>
+  <p class="section-sub">Filter by bed type, specialty, insurance and distance — see live availability instantly.</p>
+
+  <div class="hospital-search-ui">
+    <div class="filter-panel">
+      <div>
+        <div class="filter-label">City / Location</div>
+        <select class="filter-select">
+          <option>Kolkata, West Bengal</option>
+          <option>Mumbai, Maharashtra</option>
+          <option>Delhi, NCR</option>
+          <option>Bengaluru, Karnataka</option>
+          <option>Chennai, Tamil Nadu</option>
+        </select>
+      </div>
+
+      <div>
+        <div class="filter-label">Emergency Type</div>
+        <select class="filter-select">
+          <option>Any Emergency</option>
+          <option>Cardiac / Heart</option>
+          <option>Neurological / Brain</option>
+          <option>Trauma / Accident</option>
+          <option>Maternity</option>
+          <option>Respiratory</option>
+        </select>
+      </div>
+
+      <div>
+        <div class="filter-label">Bed Type</div>
+        <div class="bed-type-btns">
+          <button class="bed-type-btn active" onclick="toggleBed(this)">ICU</button>
+          <button class="bed-type-btn" onclick="toggleBed(this)">General</button>
+          <button class="bed-type-btn" onclick="toggleBed(this)">Private</button>
+          <button class="bed-type-btn" onclick="toggleBed(this)">Semi-Private</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="filter-label">Insurance</div>
+        <select class="filter-select">
+          <option>Any / Self-Pay</option>
+          <option>Star Health</option>
+          <option>HDFC ERGO</option>
+          <option>Niva Bupa</option>
+          <option>ICICI Lombard</option>
+        </select>
+      </div>
+
+      <button class="btn-search-now" onclick="showToast('🔍 Searching hospitals in your area...')">Search Hospitals</button>
+    </div>
+
+    <div class="hospitals-list">
+      <div class="hospital-card">
+        <div class="hospital-avatar">🏥</div>
+        <div class="hospital-info">
+          <div class="hospital-name">Apollo Hospitals, Kolkata</div>
+          <div class="hospital-meta">
+            <span>📍 3.2 km</span>
+            <span>⭐ 4.8</span>
+            <span>🕐 Open 24/7</span>
+            <span>💳 Insurance Accepted</span>
+          </div>
+        </div>
+        <div class="beds-info">
+          <div class="beds-avail">14</div>
+          <div class="beds-label">ICU Beds</div>
+        </div>
+        <button class="btn-book" onclick="openBookingModal('Apollo Hospitals, Kolkata')">Book Bed</button>
+      </div>
+
+      <div class="hospital-card">
+        <div class="hospital-avatar">🏨</div>
+        <div class="hospital-info">
+          <div class="hospital-name">AMRI Hospitals, Salt Lake</div>
+          <div class="hospital-meta">
+            <span>📍 5.7 km</span>
+            <span>⭐ 4.6</span>
+            <span>🕐 Open 24/7</span>
+            <span>💳 Insurance Accepted</span>
+          </div>
+        </div>
+        <div class="beds-info">
+          <div class="beds-avail">7</div>
+          <div class="beds-label">ICU Beds</div>
+        </div>
+        <button class="btn-book" onclick="openBookingModal('AMRI Hospitals, Salt Lake')">Book Bed</button>
+      </div>
+
+      <div class="hospital-card">
+        <div class="hospital-avatar">🏪</div>
+        <div class="hospital-info">
+          <div class="hospital-name">Fortis Hospital, Anandapur</div>
+          <div class="hospital-meta">
+            <span>📍 8.1 km</span>
+            <span>⭐ 4.7</span>
+            <span>🕐 Open 24/7</span>
+            <span>💳 Self-Pay Available</span>
+          </div>
+        </div>
+        <div class="beds-info">
+          <div class="beds-avail">3</div>
+          <div class="beds-label">ICU Beds</div>
+        </div>
+        <button class="btn-book" onclick="openBookingModal('Fortis Hospital, Anandapur')">Book Bed</button>
+      </div>
+
+      <div class="hospital-card">
+        <div class="hospital-avatar">🏦</div>
+        <div class="hospital-info">
+          <div class="hospital-name">Medica Superspecialty Hospital</div>
+          <div class="hospital-meta">
+            <span>📍 10.3 km</span>
+            <span>⭐ 4.5</span>
+            <span>🕐 Open 24/7</span>
+            <span>💳 Insurance Accepted</span>
+          </div>
+        </div>
+        <div class="beds-info">
+          <div class="beds-avail">22</div>
+          <div class="beds-label">General Beds</div>
+        </div>
+        <button class="btn-book" onclick="openBookingModal('Medica Superspecialty Hospital')">Book Bed</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AMBULANCE -->
+<section id="ambulance" class="reveal">
+  <div class="section-tag">Emergency Response</div>
+  <h2 class="section-title">Call an ambulance instantly</h2>
+  <p class="section-sub">Our network of verified ambulances is available 24/7. Share your location and we'll dispatch the nearest vehicle.</p>
+
+  <div class="ambulance-ui">
+    <div class="ambulance-form">
+      <div class="form-group">
+        <div class="form-label">Your Location</div>
+        <input class="form-input" type="text" placeholder="Auto-detecting... or enter address">
+      </div>
+
+      <div class="form-group">
+        <div class="form-label">Emergency Type</div>
+        <div class="emergency-types">
+          <div class="emergency-type active" onclick="selectEmergency(this)">
+            <div class="et-icon">❤️</div>
+            <div class="et-label">Cardiac</div>
+          </div>
+          <div class="emergency-type" onclick="selectEmergency(this)">
+            <div class="et-icon">🧠</div>
+            <div class="et-label">Neurological</div>
+          </div>
+          <div class="emergency-type" onclick="selectEmergency(this)">
+            <div class="et-icon">🦴</div>
+            <div class="et-label">Trauma</div>
+          </div>
+          <div class="emergency-type" onclick="selectEmergency(this)">
+            <div class="et-icon">👶</div>
+            <div class="et-label">Maternity</div>
+          </div>
+          <div class="emergency-type" onclick="selectEmergency(this)">
+            <div class="et-icon">🫁</div>
+            <div class="et-label">Respiratory</div>
+          </div>
+          <div class="emergency-type" onclick="selectEmergency(this)">
+            <div class="et-icon">🩺</div>
+            <div class="et-label">General</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label">Additional Notes</div>
+        <input class="form-input" type="text" placeholder="Patient condition, age, etc.">
+      </div>
+
+      <button class="btn-call-ambulance" onclick="showToast('🚑 Ambulance dispatched! ETA: 8 minutes')">
+        🚑 Dispatch Ambulance Now
+      </button>
+    </div>
+
+    <div class="ambulance-info-cards">
+      <div class="ambu-info-card">
+        <div class="ambu-icon-wrap" style="background:rgba(229,62,62,0.1);">🚑</div>
+        <div>
+          <div class="ambu-card-title">24/7 Availability</div>
+          <p class="ambu-card-desc">Our ambulance fleet operates round the clock. No matter the hour, help is always on the way.</p>
+        </div>
+      </div>
+      <div class="ambu-info-card">
+        <div class="ambu-icon-wrap" style="background:rgba(49,130,206,0.1);">📍</div>
+        <div>
+          <div class="ambu-card-title">Live GPS Tracking</div>
+          <p class="ambu-card-desc">Track the ambulance in real-time on a map. Share the link with family members for updates.</p>
+        </div>
+      </div>
+      <div class="ambu-info-card">
+        <div class="ambu-icon-wrap" style="background:rgba(74,222,128,0.1);">⚕️</div>
+        <div>
+          <div class="ambu-card-title">Paramedic Onboard</div>
+          <p class="ambu-card-desc">Every ambulance carries a certified paramedic and basic life support equipment.</p>
+        </div>
+      </div>
+      <div class="ambu-info-card">
+        <div class="ambu-icon-wrap" style="background:rgba(237,137,54,0.1);">⚡</div>
+        <div>
+          <div class="ambu-card-title">8 Min Avg. Arrival</div>
+          <p class="ambu-card-desc">Our algorithm dispatches the closest unit. Average arrival time in metro areas is under 8 minutes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTORS -->
+<section id="doctors" class="reveal">
+  <div class="section-tag">Medical Specialists</div>
+  <h2 class="section-title">Connect with verified doctors</h2>
+  <p class="section-sub">Browse specialists by availability, rating and expertise. Book a slot in under 60 seconds.</p>
+
+  <div class="doctors-grid">
+    <div class="doctor-card">
+      <div class="doctor-avatar" style="background:#0d2a1a;">👨‍⚕️</div>
+      <div class="doctor-name">Dr. Avik Chatterjee</div>
+      <div class="doctor-spec">Cardiologist</div>
+      <div class="doctor-avail">Available Now</div>
+      <div class="doctor-rating">⭐ 4.9 · 312 reviews</div>
+      <button class="btn-book-doc" onclick="showToast('📅 Appointment request sent to Dr. Chatterjee')">Book Appointment</button>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar" style="background:#1a1a2a;">👩‍⚕️</div>
+      <div class="doctor-name">Dr. Priya Sharma</div>
+      <div class="doctor-spec">Neurologist</div>
+      <div class="doctor-avail busy">Next Slot: 3PM</div>
+      <div class="doctor-rating">⭐ 4.8 · 289 reviews</div>
+      <button class="btn-book-doc" onclick="showToast('📅 Appointment booked for 3:00 PM today')">Book Appointment</button>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar" style="background:#2a1a0d;">👨‍⚕️</div>
+      <div class="doctor-name">Dr. Rahul Bose</div>
+      <div class="doctor-spec">Orthopaedics</div>
+      <div class="doctor-avail">Available Now</div>
+      <div class="doctor-rating">⭐ 4.7 · 198 reviews</div>
+      <button class="btn-book-doc" onclick="showToast('📅 Appointment request sent to Dr. Bose')">Book Appointment</button>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar" style="background:#1a2a1a;">👩‍⚕️</div>
+      <div class="doctor-name">Dr. Meera Nair</div>
+      <div class="doctor-spec">Gynaecologist</div>
+      <div class="doctor-avail">Available Now</div>
+      <div class="doctor-rating">⭐ 4.9 · 445 reviews</div>
+      <button class="btn-book-doc" onclick="showToast('📅 Appointment request sent to Dr. Nair')">Book Appointment</button>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar" style="background:#2a1a1a;">👨‍⚕️</div>
+      <div class="doctor-name">Dr. Suresh Menon</div>
+      <div class="doctor-spec">Pulmonologist</div>
+      <div class="doctor-avail busy">Next Slot: 5PM</div>
+      <div class="doctor-rating">⭐ 4.6 · 167 reviews</div>
+      <button class="btn-book-doc" onclick="showToast('📅 Appointment booked for 5:00 PM today')">Book Appointment</button>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar" style="background:#1a1a1a;">👩‍⚕️</div>
+      <div class="doctor-name">Dr. Anjali Roy</div>
+      <div class="doctor-spec">Paediatrician</div>
+      <div class="doctor-avail">Available Now</div>
+      <div class="doctor-rating">⭐ 4.8 · 521 reviews</div>
+      <button class="btn-book-doc" onclick="showToast('📅 Appointment request sent to Dr. Roy')">Book Appointment</button>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar" style="background:#0d1a2a;">👨‍⚕️</div>
+      <div class="doctor-name">Dr. Vikram Singh</div>
+      <div class="doctor-spec">General Surgeon</div>
+      <div class="doctor-avail">Available Now</div>
+      <div class="doctor-rating">⭐ 4.7 · 234 reviews</div>
+      <button class="btn-book-doc" onclick="showToast('📅 Appointment request sent to Dr. Singh')">Book Appointment</button>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar" style="background:#2a0d2a;">👩‍⚕️</div>
+      <div class="doctor-name">Dr. Tanuja Das</div>
+      <div class="doctor-spec">Oncologist</div>
+      <div class="doctor-avail busy">Next Slot: Tomorrow</div>
+      <div class="doctor-rating">⭐ 4.9 · 389 reviews</div>
+      <button class="btn-book-doc" onclick="showToast('📅 Appointment scheduled for tomorrow')">Book Appointment</button>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE -->
+<section id="insurance" class="reveal">
+  <div class="section-tag">Insurance Compatibility</div>
+  <h2 class="section-title">Know your coverage before you go</h2>
+  <p class="section-sub">No surprise bills. Check which hospitals are covered under your policy instantly.</p>
+
+  <div class="insurance-ui">
+    <div class="insurance-checker">
+      <div class="insurance-title-sm">Check Your Coverage</div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <div class="form-label">Insurance Provider</div>
+        <select class="filter-select" id="insProvider">
+          <option value="">Select provider...</option>
+          <option value="star">Star Health Insurance</option>
+          <option value="hdfc">HDFC ERGO Health</option>
+          <option value="niva">Niva Bupa Health</option>
+          <option value="icici">ICICI Lombard</option>
+          <option value="care">Care Health Insurance</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <div class="form-label">Policy Number (Optional)</div>
+        <input class="form-input" type="text" placeholder="e.g. STAR-2024-XXXXXXXX">
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <div class="form-label">Hospital Name</div>
+        <select class="filter-select">
+          <option>Apollo Hospitals, Kolkata</option>
+          <option>AMRI Hospitals, Salt Lake</option>
+          <option>Fortis Hospital, Anandapur</option>
+          <option>Medica Superspecialty</option>
+        </select>
+      </div>
+
+      <button class="btn-search-now" onclick="checkInsurance()">Check Compatibility</button>
+
+      <div class="insurance-result" id="insResult">
+        <div class="ins-result-title">✅ Coverage Confirmed</div>
+        <ul class="ins-result-list">
+          <li>Inpatient hospitalization covered up to ₹10 lakhs</li>
+          <li>ICU charges covered (up to 2% of sum insured/day)</li>
+          <li>Pre & post hospitalization expenses included</li>
+          <li>Ambulance charges covered up to ₹3,000</li>
+          <li>Cashless facility available at this hospital</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insurance-providers">
+      <div style="font-family:'Fustat',sans-serif; font-size:20px; font-weight:600; color:#fff; letter-spacing:-0.5px; margin-bottom:8px;">Partner Insurance Networks</div>
+      <p style="font-family:'Noto Sans',sans-serif; font-size:14px; color:rgba(255,255,255,0.4); margin-bottom:20px; line-height:1.6;">We partner with all major Indian health insurers for seamless cashless hospitalization.</p>
+
+      <div class="provider-card">
+        <div class="provider-logo" style="background:rgba(229,62,62,0.1);">⭐</div>
+        <div class="provider-name">Star Health Insurance</div>
+        <div class="provider-tag">2,100+ Hospitals</div>
+      </div>
+      <div class="provider-card">
+        <div class="provider-logo" style="background:rgba(49,130,206,0.1);">🏦</div>
+        <div class="provider-name">HDFC ERGO Health</div>
+        <div class="provider-tag">1,800+ Hospitals</div>
+      </div>
+      <div class="provider-card">
+        <div class="provider-logo" style="background:rgba(74,222,128,0.1);">💚</div>
+        <div class="provider-name">Niva Bupa Health</div>
+        <div class="provider-tag">6,000+ Hospitals</div>
+      </div>
+      <div class="provider-card">
+        <div class="provider-logo" style="background:rgba(237,137,54,0.1);">🔶</div>
+        <div class="provider-name">ICICI Lombard</div>
+        <div class="provider-tag">4,500+ Hospitals</div>
+      </div>
+      <div class="provider-card">
+        <div class="provider-logo" style="background:rgba(159,122,234,0.1);">💜</div>
+        <div class="provider-name">Care Health Insurance</div>
+        <div class="provider-tag">7,400+ Hospitals</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="reveal">
+  <div class="cta-inner">
+    <h2 class="cta-title">Healthcare shouldn't<br>wait for paperwork.</h2>
+    <p class="cta-sub">Join over 1.2 million users who use MediBook to find beds, call ambulances, and consult doctors — instantly.</p>
+    <div class="cta-btns">
+      <button class="btn-primary" onclick="showModal('signup')">Get Started Free</button>
+      <button class="btn-secondary" onclick="document.getElementById('search-hospitals').scrollIntoView({behavior:'smooth'})">Find Hospitals →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">
+        <div class="nav-logo-icon" style="width:24px;height:24px;">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14M4 4l8 8M12 4l-8 8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        MediBook
+      </div>
+      <p class="footer-brand-desc">India's first real-time hospital bed booking platform. Reducing emergency response time, one booking at a time.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Platform</div>
+      <ul class="footer-links">
+        <li><a href="#search-hospitals">Find Hospitals</a></li>
+        <li><a href="#ambulance">Book Ambulance</a></li>
+        <li><a href="#doctors">Consult Doctors</a></li>
+        <li><a href="#insurance">Insurance Check</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Hospital Partners</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Support</div>
+      <ul class="footer-links">
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 MediBook Technologies Pvt. Ltd. All rights reserved.</div>
+    <div class="footer-emergency">🚨 Emergency: Call 112 (National)</div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-title" id="modalTitle">Create Account</div>
+    <p class="modal-subtitle" id="modalSubtitle">Join MediBook to save your preferences, insurance details, and access your booking history.</p>
+
+    <div class="form-group" style="margin-bottom:12px;">
+      <div class="form-label">Full Name</div>
+      <input class="form-input" type="text" placeholder="Your name">
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <div class="form-label">Email / Phone</div>
+      <input class="form-input" type="text" placeholder="email@example.com">
+    </div>
+    <div class="form-group" style="margin-bottom:4px;">
+      <div class="form-label">Password</div>
+      <input class="form-input" type="password" placeholder="Create a secure password">
+    </div>
+
+    <button class="modal-confirm" id="modalConfirmBtn" onclick="handleModalConfirm()">Create Account</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon">✅</div>
+  <div class="toast-msg" id="toastMsg">Action completed!</div>
+</div>
+
+<script>
+  // ===== VIDEO FADE SYSTEM =====
+  const video = document.getElementById('bg-video');
+  let fadingOutRef = false;
+  let currentRAF = null;
+
+  function cancelRAF() {
+    if (currentRAF !== null) { cancelAnimationFrame(currentRAF); currentRAF = null; }
+  }
+
+  function fadeIn(startOpacity) {
+    cancelRAF();
+    fadingOutRef = false;
+    const start = performance.now();
+    const duration = 250;
+    const fromOp = startOpacity ?? parseFloat(video.style.opacity) || 0;
+    function step(now) {
+      const t = Math.min((now - start) / duration, 1);
+      video.style.opacity = fromOp + (1 - fromOp) * t;
+      if (t < 1) currentRAF = requestAnimationFrame(step);
+      else { currentRAF = null; video.style.opacity = 1; }
+    }
+    currentRAF = requestAnimationFrame(step);
+  }
+
+  function fadeOut() {
+    if (fadingOutRef) return;
+    fadingOutRef = true;
+    cancelRAF();
+    const start = performance.now();
+    const duration = 250;
+    const fromOp = parseFloat(video.style.opacity) || 1;
+    function step(now) {
+      const t = Math.min((now - start) / duration, 1);
+      video.style.opacity = fromOp * (1 - t);
+      if (t < 1) currentRAF = requestAnimationFrame(step);
+      else {
+        currentRAF = null;
+        video.style.opacity = 0;
+        setTimeout(() => {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+          fadeIn(0);
+        }, 100);
+      }
+    }
+    currentRAF = requestAnimationFrame(step);
+  }
+
+  video.addEventListener('timeupdate', () => {
+    const remaining = video.duration - video.currentTime;
+    if (!isNaN(remaining) && remaining <= 0.55 && !fadingOutRef) fadeOut();
+  });
+
+  video.addEventListener('ended', () => {
+    video.style.opacity = 0;
+    fadingOutRef = false;
+    setTimeout(() => { video.currentTime = 0; video.play().catch(() => {}); fadeIn(0); }, 100);
+  });
+
+  video.addEventListener('canplay', () => { video.play().catch(() => {}); fadeIn(0); });
+
+  // ===== CHAR COUNT =====
+  function updateCount(el) {
+    document.getElementById('charCount').textContent = el.value.length + '/3,000';
+  }
+
+  // ===== SEARCH =====
+  function handleSearch() {
+    const v = document.getElementById('heroSearch').value.trim();
+    if (v) {
+      showToast('🔍 Searching for: ' + v.slice(0, 40) + (v.length > 40 ? '...' : ''));
+    }
+  }
+
+  document.getElementById('heroSearch').addEventListener('keydown', e => { if (e.key === 'Enter') handleSearch(); });
+
+  // ===== MODAL =====
+  let modalMode = 'signup';
+  function showModal(mode) {
+    modalMode = mode;
+    const overlay = document.getElementById('modalOverlay');
+    const title = document.getElementById('modalTitle');
+    const sub = document.getElementById('modalSubtitle');
+    const btn = document.getElementById('modalConfirmBtn');
+    if (mode === 'login') {
+      title.textContent = 'Welcome Back';
+      sub.textContent = 'Log in to access your booking history and saved hospitals.';
+      btn.textContent = 'Log In';
+    } else {
+      title.textContent = 'Create Account';
+      sub.textContent = 'Join MediBook to save preferences, insurance details, and booking history.';
+      btn.textContent = 'Create Account';
+    }
+    overlay.classList.add('show');
+  }
+
+  function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalDirect(); }
+  function closeModalDirect() { document.getElementById('modalOverlay').classList.remove('show'); }
+
+  function handleModalConfirm() {
+    closeModalDirect();
+    showToast(modalMode === 'login' ? '👋 Welcome back! Logged in.' : '🎉 Account created! Welcome to MediBook.');
+  }
+
+  // ===== BOOKING MODAL =====
+  function openBookingModal(hospitalName) {
+    document.getElementById('modalTitle').textContent = 'Book Bed';
+    document.getElementById('modalSubtitle').textContent = 'Confirm your bed booking at ' + hospitalName + '. Our team will have a bed reserved for you on arrival.';
+    document.getElementById('modalConfirmBtn').textContent = 'Confirm Booking';
+    modalMode = 'booking';
+    document.getElementById('modalOverlay').classList.add('show');
+  }
+
+  // ===== TOAST =====
+  let toastTimer = null;
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
+  // ===== BED TYPE =====
+  function toggleBed(el) {
+    document.querySelectorAll('.bed-type-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ===== EMERGENCY TYPE =====
+  function selectEmergency(el) {
+    document.querySelectorAll('.emergency-type').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ===== INSURANCE CHECK =====
+  function checkInsurance() {
+    const provider = document.getElementById('insProvider').value;
+    const result = document.getElementById('insResult');
+    if (!provider) { showToast('⚠️ Please select your insurance provider.'); return; }
+    result.classList.add('show');
+    showToast('✅ Insurance compatibility verified!');
+  }
+
+  // ===== SCROLL REVEAL =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
